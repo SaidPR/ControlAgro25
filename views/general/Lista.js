@@ -1,20 +1,33 @@
 import React, { useState, useEffect } from "react";
-import {View, Text, TouchableOpacity, FlatList, StyleSheet, Dimensions,} from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  StyleSheet,
+  Dimensions,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import MenuLateral from "../../components/Slidebar";
 import { FIRESTORE_DB } from "../../services/firebaseConfig";
 import {
   collection,
   getDocs,
-  updateDoc,
-  doc,
   addDoc,
 } from "firebase/firestore";
-import MenuLateral from "../../components/Slidebar";
 import BottomNavigationBar from "../../components/BottomNavigationBar";
 
 const { width, height } = Dimensions.get("window");
 
 const Lista = ({ navigation }) => {
   const [workers, setWorkers] = useState([]);
+  const [filteredWorkers, setFilteredWorkers] = useState([]);
+  const [searchText, setSearchText] = useState("");
   const [currentDate, setCurrentDate] = useState("");
 
   useEffect(() => {
@@ -41,6 +54,7 @@ const Lista = ({ navigation }) => {
           }
         });
         setWorkers(workersData);
+        setFilteredWorkers(workersData); // Inicializar la lista filtrada
       } catch (error) {
         console.error("Error al obtener trabajadores:", error);
       }
@@ -48,6 +62,18 @@ const Lista = ({ navigation }) => {
 
     fetchWorkers();
   }, []);
+
+  const handleSearch = (text) => {
+    setSearchText(text);
+    if (text === "") {
+      setFilteredWorkers(workers); // Mostrar todos si no hay texto
+    } else {
+      const filtered = workers.filter((worker) =>
+        worker.name.toLowerCase().includes(text.toLowerCase())
+      );
+      setFilteredWorkers(filtered);
+    }
+  };
 
   const handleAttendance = async (workerId, status) => {
     try {
@@ -110,26 +136,48 @@ const Lista = ({ navigation }) => {
           </TouchableOpacity>
         )}
       </View>
-      
     );
   };
 
   return (
-    
-    <View style={styles.container}>
-      <Text style={styles.title}>Lista de Trabajadores</Text>
-      <Text style={styles.date}>{currentDate}</Text>
-      <FlatList
-        data={workers}
-        keyExtractor={(item) => item.id}
-        renderItem={renderWorker}
-        contentContainerStyle={styles.listContainer}
-      />
-      {/* Barra de navegación inferior */}
-    <MenuLateral navigation={navigation} />
-    <BottomNavigationBar navigation={navigation} />
-    </View>
-    
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Pase de Lista</Text>
+          <Text style={styles.date}>{currentDate}</Text>
+
+          {/* Cuadro de búsqueda con ícono */}
+          <View style={styles.searchContainer}>
+            <MaterialIcons
+              name="search"
+              size={24}
+              color="#aaa"
+              style={styles.searchIcon}
+            />
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Buscar trabajador..."
+              value={searchText}
+              onChangeText={handleSearch}
+            />
+          </View>
+
+          <FlatList
+            data={filteredWorkers}
+            keyExtractor={(item) => item.id}
+            renderItem={renderWorker}
+            contentContainerStyle={styles.listContainer}
+          />
+          {/* Menú lateral */}
+          <MenuLateral navigation={navigation} />
+          {/* Barra de navegación inferior */}
+          <BottomNavigationBar navigation={navigation} />
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -137,10 +185,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: width * 0.05,
-    backgroundColor: "#f4f4f4",
+    backgroundColor: "#fff",
   },
   title: {
-    marginTop: height * 0.05,
+    marginTop: height * 0.08,
     fontSize: width * 0.06,
     fontWeight: "bold",
     color: "#333",
@@ -152,6 +200,24 @@ const styles = StyleSheet.create({
     color: "#555",
     textAlign: "center",
     marginBottom: height * 0.02,
+  },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderColor: "#ddd",
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    marginBottom: height * 0.02,
+    backgroundColor: "#fff",
+  },
+  searchIcon: {
+    marginRight: 10,
+  },
+  searchInput: {
+    flex: 1,
+    height: 50,
+    fontSize: 16,
   },
   listContainer: {
     flexGrow: 1,

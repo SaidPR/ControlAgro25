@@ -11,13 +11,13 @@ export default function BottomNavigationBar({ navigation }) {
         style={styles.botonNavegacion}
         onPress={() => navigation.navigate("Home")}
       >
-        <MaterialIcons name="home" size={30} color="#aaa" />
+        <MaterialIcons name="home" size={33} color="#000" />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.botonNavegacion}
         onPress={() => navigation.navigate("Settings")}
       >
-        <MaterialIcons name="settings" size={30} color="#aaa" />
+        <MaterialIcons name="settings" size={33} color="#000" />
       </TouchableOpacity>
     </View>
   );

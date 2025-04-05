@@ -35,7 +35,7 @@ const VentanaVistaUsuario = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, styles.button2]}
-            onPress={() => navigation.navigate("RegUsuario")}
+            onPress={() => navigation.navigate("AddUser")}
           >
             <Text style={styles.buttonText}>Registrarse</Text>
           </TouchableOpacity>
@@ -44,9 +44,9 @@ const VentanaVistaUsuario = ({ navigation }) => {
         {/* Botón adicional */}
         <TouchableOpacity
           style={styles.eresNuevoButton}
-          onPress={() => navigation.navigate("RegUsuario")}
+          onPress={() => navigation.navigate("AddUser")}
         >
-          <Text style={styles.eresNuevo}>¿Eres nuevo?</Text>
+          <Text style={styles.buttonText}>¿Eres nuevo?</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>
@@ -61,61 +61,47 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: "space-between", // Distribuir elementos verticalmente
+    justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: height * 0.07, // Ajustar espaciado general
+    paddingVertical: height * 0.07,
   },
   logoAgricola: {
-    width: width * 0.6, // Tamaño ajustado para Figma
-    height: width * 0.6, // Mantener proporción
-    marginTop: height * 0.09, // Espaciado superior
+    width: width * 0.6,
+    height: width * 0.6,
+    marginTop: height * 0.09,
     borderRadius: 15,
   },
   buttonContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: height * 0, // Espaciado debajo del logotipo
+    marginTop: height * 0,
   },
   button: {
-    width: width * 0.8, // Botones más grandes para destacar
+    width: width * 0.8,
     paddingVertical: height * 0.02,
     borderRadius: 15,
     alignItems: "center",
-    marginBottom: height * 0.02, // Espaciado entre botones
+    marginBottom: height * 0.02,
     elevation: 4,
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowColor: "rgba(0, 0, 0, 0.25)",
   },
   button1: {
-    backgroundColor: "#14ae5c",
+    backgroundColor: "#0E8C47",
   },
   button2: {
-    backgroundColor: "#e8b931",
+    backgroundColor: "#6B5700",
   },
   buttonText: {
     fontSize: width * 0.05,
     fontWeight: "bold",
-    color: "#fff",
+    color: "#FFFFFF",
   },
   eresNuevoButton: {
-    backgroundColor: "#cb6162",
+    height: height * 0.065,
+    backgroundColor: "#953233",
     paddingVertical: height * 0.015,
     paddingHorizontal: width * 0.2,
     borderRadius: 20,
     elevation: 6,
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    shadowOffset: {
-      width: 0,
-      height: 6,
-    },
-    shadowColor: "rgba(0, 0, 0, 0.3)",
-    marginBottom: height * 0.05, // Separar del borde inferior
   },
   eresNuevo: {
     color: "#fff",
@@ -124,5 +110,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-
 export default VentanaVistaUsuario;

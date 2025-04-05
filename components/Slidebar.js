@@ -70,7 +70,7 @@ export default function MenuLateral({ navigation }) {
           style={estilos.opcionMenu}
           onPress={() => {
             alternarMenu();
-            navigation.navigate("Clientes");
+            navigation.navigate("UsersList");
           }}
         >
           <Text style={estilos.textoMenu}>Administrar Usuarios</Text>

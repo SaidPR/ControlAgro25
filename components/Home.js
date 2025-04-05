@@ -1,73 +1,114 @@
 import React from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
-import MenuLateral from "../components/Slidebar";
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image, ImageBackground } from "react-native";
 import BottomNavigationBar from "../components/BottomNavigationBar";
+import logo from "../assets/Agro.webp"; 
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 export default function PantallaInicio({ navigation }) {
   return (
-    <View style={estilos.contenedor}>
-      {/* Menú lateral */}
-      <MenuLateral navigation={navigation} />
-
-      {/* Encabezado con mensaje motivacional */}
-      <View style={estilos.encabezado}>
-        <Text style={estilos.textoEncabezado}></Text>
+    <ImageBackground
+      source={require("../assets/menuBG.webp")} // Cambia la imagen de fondo aquí
+      style={[styles.background]} // Asegura que el fondo ocupe todo el espacio disponible
+    >
+      <View style={styles.contenedor}>
+        {/* Encabezado con mensaje motivacional */}
+        <View style={styles.encabezado}>
+          {/* Logo en el menú */}
+          <Image source={logo} style={styles.logo} />
+          <Text style={styles.textoEncabezado}>Bienvenido de vuelta </Text>
+        </View>
+        {/* Botones principales */}
+        <View style={styles.buttonContainer}>
+          {/* Botón Lista */}
+          <TouchableOpacity
+            style={[styles.button, styles.button]}
+            onPress={() => navigation.navigate("Lista")}
+          >
+            <Text style={styles.buttonText}>Pase de Lista</Text>
+          </TouchableOpacity>
+          {/* Botón Usuarios */}
+          <TouchableOpacity
+            style={[styles.button, styles.button]}
+            onPress={() => navigation.navigate("UsersList")}
+          >
+            <Text style={styles.buttonText}>Administrar Usuarios</Text>
+          </TouchableOpacity>
+          {/* Botón Trabajadores */}
+          <TouchableOpacity
+            style={[styles.button, styles.button]}
+            onPress={() => navigation.navigate("Lista")}
+          >
+            <Text style={styles.buttonText}>Gestión de Trabajadores</Text>
+          </TouchableOpacity>
+          {/* Botón Produccion */}
+          <TouchableOpacity
+            style={[styles.button, styles.button]}
+            onPress={() => navigation.navigate("UsersList")}
+          >
+            <Text style={styles.buttonText}>Control de Producción</Text>
+          </TouchableOpacity>
+          {/* Botón Reportes */}
+          <TouchableOpacity
+            style={[styles.button, styles.button]}
+            onPress={() => navigation.navigate("UsersList")}
+          >
+            <Text style={styles.buttonText}>Gestión de Reportes</Text>
+          </TouchableOpacity>
+        </View>
+        {/* Barra de navegación inferior */}
+        <BottomNavigationBar navigation={navigation} />
       </View>
-
-      {/* Tarjeta que muestra las ganancias brutas */}
-      <View style={estilos.tarjeta}>
-        <Text style={estilos.tituloTarjeta}>Ganancia Bruto</Text>
-        <Text style={estilos.cantidadTarjeta}>$0.00</Text>
-      </View>
-
-      {/* Barra de navegación inferior */}
-      <BottomNavigationBar navigation={navigation} />
-    </View>
+    </ImageBackground>
   );
 }
 
-// Estilos
-const estilos = StyleSheet.create({
-  contenedor: {
+const styles = StyleSheet.create({
+  background: {
     flex: 1,
-    backgroundColor: "#fff",
+    width: "100%",
+    height: "100%",
   },
   encabezado: {
-    backgroundColor: "#FF7F00",
-    padding: 20,
+    backgroundColor: "#ffff",
+    padding: 5,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     marginBottom: 20,
   },
   textoEncabezado: {
-    color: "#fff",
-    fontSize: 16,
+    color: "#00000",
+    fontSize: 24,
     fontWeight: "600",
     textAlign: "center",
-    marginTop: 90,
+    marginTop: 5,
     padding: 20,
+  },  
+  buttonContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: height * 0.02,
+    marginBottom: height * 0.16, 
   },
-  tarjeta: {
-    backgroundColor: "#fff",
-    margin: 20,
-    padding: 20,
+  button: {
+    backgroundColor: "#A5D6A7",
+    width: width * 0.8,
+    paddingVertical: height * 0.02,
     borderRadius: 15,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    alignItems: "center",
+    marginBottom: height * 0.02,
+    elevation: 4,
   },
-  tituloTarjeta: {
-    fontSize: 16,
-    color: "#666",
-    marginBottom: 10,
-  },
-  cantidadTarjeta: {
-    fontSize: 24,
-    color: "#FF7F00",
+  buttonText: {
+    fontSize: width * 0.05,
     fontWeight: "bold",
+    color: "#113C12",
+  },
+  logo: {
+    width: width * 0.6,
+    height: width * 0.4,
+    resizeMode: "contain",
+    alignSelf: "center",
+    marginTop: 50,
   },
 });
