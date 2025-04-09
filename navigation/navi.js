@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Start from "../views/general/Start";
 import LogIn from "../views/general/Log_In";
-import PantallaInicio from "../components/Home";    
+import PantallaInicio from "../views/general/Home";    
 import Lista from "../views/general/Lista";
 import UsersList from "../views/users/UsersList";
 import UsersDetails from "../views/users/UsersDetails";

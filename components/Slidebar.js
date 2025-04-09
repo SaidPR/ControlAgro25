@@ -1,8 +1,6 @@
 import React, { useRef, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Animated, Dimensions, Image, Alert } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { signOut } from "firebase/auth";
-import { FIREBASE_AUTH } from "../services/firebaseConfig";
 import logo from "../assets/Agro.webp"; 
 
 const { width, height } = Dimensions.get("window");
@@ -25,16 +23,6 @@ export default function MenuLateral({ navigation }) {
         duration: 300,
         useNativeDriver: false,
       }).start();
-    }
-  };
-
-  const cerrarSesion = async () => {
-    try {
-      await signOut(FIREBASE_AUTH); 
-      Alert.alert("Sesión cerrada", "Has cerrado sesión correctamente.");
-      navigation.navigate("LogIn"); 
-    } catch (error) {
-      Alert.alert("Error", "Hubo un problema al cerrar sesión.");
     }
   };
 
@@ -63,7 +51,7 @@ export default function MenuLateral({ navigation }) {
           }}
         >
           <Text style={estilos.textoMenu}>Pase de lista</Text>
-          <MaterialIcons name="chevron-right" size={24} color="#007bff" />
+          <MaterialIcons name="chevron-right" size={24} color="#A5D6A7" />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -74,7 +62,7 @@ export default function MenuLateral({ navigation }) {
           }}
         >
           <Text style={estilos.textoMenu}>Administrar Usuarios</Text>
-          <MaterialIcons name="chevron-right" size={24} color="#007bff" />
+          <MaterialIcons name="chevron-right" size={24} color="#A5D6A7" />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -85,7 +73,7 @@ export default function MenuLateral({ navigation }) {
           }}
         >
           <Text style={estilos.textoMenu}>Gestión de Trabajadores</Text>
-          <MaterialIcons name="chevron-right" size={24} color="#007bff" />
+          <MaterialIcons name="chevron-right" size={24} color="#A5D6A7" />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -96,7 +84,7 @@ export default function MenuLateral({ navigation }) {
           }}
         >
           <Text style={estilos.textoMenu}>Control de Producción</Text>
-          <MaterialIcons name="chevron-right" size={24} color="#007bff" />
+          <MaterialIcons name="chevron-right" size={24} color="#A5D6A7" />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -107,14 +95,14 @@ export default function MenuLateral({ navigation }) {
           }}
         >
           <Text style={estilos.textoMenu}>Gestión de Reportes</Text>
-          <MaterialIcons name="chevron-right" size={24} color="#007bff" />
+          <MaterialIcons name="chevron-right" size={24} color="#A5D6A7" />
         </TouchableOpacity>
         {/* Botón para cerrar sesión */}
         <TouchableOpacity
           style={estilos.botonCerrarSesion}
           onPress={() => {
             alternarMenu();
-            cerrarSesion();
+            navigation.navigate("LogIn")
           }}
         >
           <Text style={estilos.textoCerrarSesion}>Cerrar Sesión</Text>
@@ -175,7 +163,7 @@ const estilos = StyleSheet.create({
   },
   textoMenu: {
     fontSize: 18,
-    color: "#007bff",
+    color: "#0E8C47",
     fontWeight: "bold",
   },
   botonCerrarSesion: {
