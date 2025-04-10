@@ -69,7 +69,7 @@ export default function MenuLateral({ navigation }) {
           style={estilos.opcionMenu}
           onPress={() => {
             alternarMenu();
-            navigation.navigate("Inventario");
+            navigation.navigate("WorkersList");
           }}
         >
           <Text style={estilos.textoMenu}>Gestión de Trabajadores</Text>
@@ -134,7 +134,7 @@ const estilos = StyleSheet.create({
     right: -40,
     bottom: 0,
     backgroundColor: "rgba(0, 0, 0, 0.5)", // Fondo semitransparente
-    zIndex: 5, // Por encima del contenido principal
+    zIndex: 5, 
   },
   barraLateral: {
     position: "absolute",

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
   FlatList,
   StyleSheet,
   Dimensions,
@@ -14,131 +13,31 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import MenuLateral from "../../components/Slidebar";
-import { FIRESTORE_DB } from "../../services/firebaseConfig";
-import { collection, getDocs, addDoc,} from "firebase/firestore";
 import BottomNavigationBar from "../../components/BottomNavigationBar";
-import { useFocusEffect } from '@react-navigation/native';
+import useListaViewModel from "../../viewmodels/general/ListaViewModel";
+import { TouchableOpacity } from 'react-native';
 
 const { width, height } = Dimensions.get("window");
 
 const Lista = ({ navigation }) => {
-  const [workers, setWorkers] = useState([]);
-  const [filteredWorkers, setFilteredWorkers] = useState([]);
-  const [searchText, setSearchText] = useState("");
-  const [currentDate, setCurrentDate] = useState("");
+  const {
+    workers,
+    filteredWorkers,
+    searchText,
+    currentDate,
+    fetchWorkers,
+    handleSearch,
+    handleAttendance,
+  } = useListaViewModel();
 
   useEffect(() => {
-    const date = new Date();
-    const formattedDate = date.toLocaleDateString("es-MX", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-    setCurrentDate(formattedDate);
+    fetchWorkers();
   }, []);
-  
-  useFocusEffect(
-    React.useCallback(() => {
-      const fetchWorkers = async () => {
-        try {
-          const querySnapshot = await getDocs(collection(FIRESTORE_DB, "users"));
-          const workersData = [];
-          querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            if (data.role === "TRABAJADOR") {
-              workersData.push({ id: doc.id, ...data, attendanceStatus: null });
-            }
-          });
-  
-          // Agrupar por estado
-          const sortedWorkers = [
-            ...workersData.filter((w) => w.attendanceStatus === "Confirmada"),
-            ...workersData.filter((w) => w.attendanceStatus === null),
-            ...workersData.filter((w) => w.attendanceStatus === "Negada"),
-          ];
-  
-          setWorkers(sortedWorkers);
-          setFilteredWorkers(sortedWorkers);
-        } catch (error) {
-          console.error("Error al obtener trabajadores:", error);
-        }
-      };
-  
-      fetchWorkers();
-    }, [])
-  );
-  
-  const handleSearch = (text) => {
-    setSearchText(text);
-    if (text === "") {
-      setFilteredWorkers(workers); // Mostrar todos si no hay texto
-    } else {
-      const filtered = workers.filter((worker) =>
-        worker.name.toLowerCase().includes(text.toLowerCase())
-      );
-      setFilteredWorkers(filtered);
-    }
-  };
 
-  const handleAttendance = async (workerId, status) => {
-    try {
-      const today = new Date().toISOString().split("T")[0]; // "YYYY-MM-DD"
-      
-      // Buscar si ya existe un registro de asistencia para ese trabajador y fecha
-      const querySnapshot = await getDocs(collection(FIRESTORE_DB, "attendance"));
-      const existingAttendance = querySnapshot.docs.find((doc) => {
-        const data = doc.data();
-        return data.workerId === workerId && data.date === today; // Comparar fecha con el formato YYYY-MM-DD
-      });
-  
-      if (existingAttendance) {
-        alert("Ya se ha registrado la asistencia para hoy.");
-        return;
-      }
-  
-      // Si no existe, agregar nueva asistencia
-      const attendanceCollectionRef = collection(FIRESTORE_DB, "attendance");
-      await addDoc(attendanceCollectionRef, {
-        workerId,
-        status,
-        date: today,
-      });
-  
-      // Actualizar la lista de trabajadores en el estado local
-      setWorkers((prevWorkers) => {
-        const updatedWorkers = prevWorkers.map((worker) =>
-          worker.id === workerId ? { ...worker, attendanceStatus: status } : worker
-        );
-        const sorted = [
-          ...updatedWorkers.filter((w) => w.attendanceStatus === "Confirmada"),
-          ...updatedWorkers.filter((w) => w.attendanceStatus === null),
-          ...updatedWorkers.filter((w) => w.attendanceStatus === "Negada"),
-        ];
-        return sorted;
-      });
-  
-      setFilteredWorkers((prevWorkers) => {
-        const updatedFilteredWorkers = prevWorkers.map((worker) =>
-          worker.id === workerId ? { ...worker, attendanceStatus: status } : worker
-        );
-        const sortedFiltered = [
-          ...updatedFilteredWorkers.filter((w) => w.attendanceStatus === "Confirmada"),
-          ...updatedFilteredWorkers.filter((w) => w.attendanceStatus === null),
-          ...updatedFilteredWorkers.filter((w) => w.attendanceStatus === "Negada"),
-        ];
-        return sortedFiltered;
-      });
-  
-      console.log("Asistencia registrada con éxito");
-    } catch (error) {
-      console.error("Error al registrar asistencia:", error);
-    }
-  };
-  
   const renderWorker = ({ item }) => {
     const isConfirmed = item.attendanceStatus === "Confirmada";
     const isDenied = item.attendanceStatus === "Negada";
-  
+
     return (
       <View
         style={[
@@ -151,7 +50,7 @@ const Lista = ({ navigation }) => {
           <MaterialIcons name="person" size={28} color={isConfirmed ? "#4CAF50" : isDenied ? "#F44336" : "#aaa"} />
           <Text style={styles.workerName}>{item.name}</Text>
         </View>
-  
+
         {item.attendanceStatus === null ? (
           <View style={styles.buttonsRow}>
             <TouchableOpacity
@@ -177,7 +76,6 @@ const Lista = ({ navigation }) => {
       </View>
     );
   };
-  
 
   const renderSection = (title, workers) => (
     <>

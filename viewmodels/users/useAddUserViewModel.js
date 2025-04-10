@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
-import { FIREBASE_AUTH, FIRESTORE_DB } from "../services/firebaseConfig";
+import { FIREBASE_AUTH, FIRESTORE_DB } from "../../services/firebaseConfig";
 
 const useAddUserViewModel = (navigation) => {
   const [formData, setFormData] = useState({

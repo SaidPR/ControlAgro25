@@ -11,7 +11,7 @@ import {
   TextInput,
 } from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import UsersViewModel from "../../viewmodels/UsersViewModel";
+import UsersViewModel from "../../viewmodels/users/UsersViewModel";
 import MenuLateral from "../../components/Slidebar";
 import BottomNavigationBar from "../../components/BottomNavigationBar";
 
@@ -115,7 +115,6 @@ const UsersList = ({ navigation }) => {
   );
 };
 
-// Mismos estilos que ya tenías
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f4f4f4", padding: 10 },
   title: {

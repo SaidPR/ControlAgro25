@@ -2,8 +2,8 @@ import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
 import { Alert, Linking } from "react-native";
-import { FIRESTORE_DB } from "../services/firebaseConfig";
-import UserModel from "../models/UserModel";
+import { FIRESTORE_DB } from "../../services/firebaseConfig";
+import UserModel from "../../models/UserModel";
 
 export default class UsersViewModel {
   constructor(setUsers, setFilteredUsers, setLoading) {

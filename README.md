@@ -1,3 +1,6 @@
 # ControAgroFinal
 ControlAgro con MVVM corregido
-xd
+
+10/04/2025
+MVVM Aplicado:
+Usuarios - Listo

@@ -1,31 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, Alert, Dimensions, TouchableOpacity } from 'react-native';
-import { deleteDoc, doc } from 'firebase/firestore';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import MenuLateral from "../../components/Slidebar";
 import BottomNavigationBar from "../../components/BottomNavigationBar";
-import { FIRESTORE_DB } from "../../services/firebaseConfig";
+import { useUserDetailsViewModel } from "../../viewmodels/users/UserDetailsViewModel";
 
 const { width, height } = Dimensions.get("window");
 
 const UsersDetails = ({ route, navigation }) => {
   const user = route.params?.user;
-
-  // Función para eliminar al usuario de la base de datos
-  const handleDeleteUser = async () => {
-    try {
-      await deleteDoc(doc(FIRESTORE_DB, 'users', user.id));
-      Alert.alert('Éxito', 'Usuario eliminado correctamente.');
-      navigation.goBack();
-    } catch (error) {
-      console.error('Error al eliminar el usuario:', error);
-      Alert.alert('Error', 'No se pudo eliminar el usuario.');
-    }
-  };
-
-  // Navegar a la pantalla de edición
-  const handleEditUser = () => {
-    navigation.navigate('UserEdit', { user });
-  };
+  const { deleteUser, goToEditUser } = useUserDetailsViewModel(navigation);
 
   return (
     <View style={styles.container}>
@@ -44,25 +27,22 @@ const UsersDetails = ({ route, navigation }) => {
         return null;
       })}
 
-      {/* Botón para editar información */}
       <TouchableOpacity
         style={[styles.button, { backgroundColor: '#3498db' }]}
-        onPress={handleEditUser}
+        onPress={() => goToEditUser(user)}
       >
         <Text style={styles.buttonText}>Editar Información</Text>
       </TouchableOpacity>
 
-      {/* Botón para eliminar al usuario */}
       <TouchableOpacity
         style={styles.button}
-        onPress={handleDeleteUser}
+        onPress={() => deleteUser(user.id)}
       >
         <Text style={styles.buttonText}>Eliminar Usuario</Text>
       </TouchableOpacity>
-    {/* Menú lateral */}
-    <MenuLateral navigation={navigation} />
-    {/* Barra de navegación inferior */}
-    <BottomNavigationBar navigation={navigation} />
+
+      <MenuLateral navigation={navigation} />
+      <BottomNavigationBar navigation={navigation} />
     </View>
   );
 };

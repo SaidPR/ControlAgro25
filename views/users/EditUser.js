@@ -1,38 +1,20 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet, Button, Alert } from "react-native";
-import { doc, updateDoc } from "firebase/firestore";
+import React from "react";
+import { View, Text, TextInput, StyleSheet, Button } from "react-native";
 import MenuLateral from "../../components/Slidebar";
 import BottomNavigationBar from "../../components/BottomNavigationBar";
-import { FIRESTORE_DB } from "../../services/firebaseConfig";
+import { useUserEditViewModel } from "../../viewmodels/users/UserEditViewModel";
 
 const UserEdit = ({ route, navigation }) => {
-  const user = route.params?.user; 
-  const [name, setName] = useState(user?.name || "");
-  const [email, setEmail] = useState(user?.email || "");
-  const [phone, setPhone] = useState(user?.phone || "");
-
-  const handleUpdateUser = async () => {
-    if (!name || !email || !phone) {
-      Alert.alert("Error", "Todos los campos son obligatorios.");
-      return;
-    }
-
-    try {
-      const userRef = doc(FIRESTORE_DB, "users", user.id);
-
-      await updateDoc(userRef, {
-        name,
-        email,
-        phone,
-      });
-
-      Alert.alert("Éxito", "Usuario actualizado correctamente.");
-      navigation.goBack(); 
-    } catch (error) {
-      console.error("Error al actualizar el usuario:", error);
-      Alert.alert("Error", "No se pudo actualizar el usuario.");
-    }
-  };
+  const user = route.params?.user;
+  const {
+    name,
+    email,
+    phone,
+    setName,
+    setEmail,
+    setPhone,
+    handleUpdateUser,
+  } = useUserEditViewModel(user, navigation);
 
   return (
     <View style={styles.container}>
@@ -71,9 +53,8 @@ const UserEdit = ({ route, navigation }) => {
           color="#aaa"
         />
       </View>
-      {/* Menú lateral */}
+
       <MenuLateral navigation={navigation} />
-      {/* Barra de navegación inferior */}
       <BottomNavigationBar navigation={navigation} />
     </View>
   );

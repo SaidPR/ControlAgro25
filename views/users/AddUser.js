@@ -11,7 +11,7 @@ import {
   Platform,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import useAddUserViewModel from "../../viewmodels/useAddUserViewModel";
+import useAddUserViewModel from "../../viewmodels/users/useAddUserViewModel";
 import { collection, setDoc, doc } from "firebase/firestore"; // <-- actualizado
 
 const { width, height } = Dimensions.get("window");
