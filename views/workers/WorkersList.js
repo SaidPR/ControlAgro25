@@ -97,9 +97,19 @@ const WorkersList = ({ navigation }) => {
             }
           />
         </View>
+        <View style={styles.container}>
+      {/* Botón de Registrar Trabajador */}
+      <TouchableOpacity
+        style={styles.registerButton}
+        onPress={() => navigation.navigate("AddWorker")}
+      >
+        <Text style={styles.registerButtonText}>+ Registrar Trabajador</Text>
+      </TouchableOpacity>
+
+    </View>
   
         {loading ? (
-          <Text style={styles.loadingText}>Cargando usuarios...</Text>
+          <Text style={styles.loadingText}>Cargando trabajadores...</Text>
         ) : (
           <FlatList
             data={filteredUsers}
@@ -143,13 +153,13 @@ const styles = StyleSheet.create({
     height: 40,
     fontSize: 16,
   },
-  list: { paddingBottom: 20 },
+  list: { paddingBottom: 250 },
   registerButton: {
     backgroundColor: "#4caf50",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
-    marginBottom: 15,
+    marginBottom: 0,
   },
   registerButtonText: {
     color: "#fff",

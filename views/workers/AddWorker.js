@@ -10,11 +10,11 @@ import {
   Platform,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import useAddUserViewModel from "../../viewmodels/users/useAddUserViewModel";
+import useAddWorkerViewModel from "../../viewmodels/workers/useAddWorkerViewModel";
 
 const { width, height } = Dimensions.get("window");
 
-const AddUser = ({ navigation }) => {
+const AddWorker = ({ navigation }) => {
   const {
     formData,
     error,
@@ -23,7 +23,7 @@ const AddUser = ({ navigation }) => {
     handleDateChange,
     handleRegistro,
     setShowDatePicker,
-  } = useAddUserViewModel(navigation);
+  } = useAddWorkerViewModel(navigation);
 
   return (
     <KeyboardAvoidingView
@@ -31,7 +31,7 @@ const AddUser = ({ navigation }) => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>Registro de Usuario</Text>
+        <Text style={styles.title}>Registro de Trabajador</Text>
         {error && <Text style={styles.errorText}>{error}</Text>}
 
         <TextInput
@@ -169,4 +169,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddUser;
+export default AddWorker;

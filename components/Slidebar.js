@@ -102,7 +102,7 @@ export default function MenuLateral({ navigation }) {
           style={estilos.botonCerrarSesion}
           onPress={() => {
             alternarMenu();
-            navigation.navigate("LogIn")
+            navigation.navigate("Start")
           }}
         >
           <Text style={estilos.textoCerrarSesion}>Cerrar Sesión</Text>

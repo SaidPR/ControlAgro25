@@ -5,7 +5,7 @@ import { FIREBASE_AUTH, FIRESTORE_DB } from "../../services/firebaseConfig";
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 
-const useAddUserViewModel = (navigation) => {
+const useAddWorkerViewModel = (navigation) => {
 
   useEffect(() => {
     registerForPushNotificationsAsync();
@@ -84,7 +84,7 @@ const useAddUserViewModel = (navigation) => {
         email,
         fechaNacimiento,
         curp: formData.curp,
-        role: "ADMIN",
+        role: "TRABAJADOR",
       };
 
       const usersCollectionRef = collection(FIRESTORE_DB, "users");
@@ -126,4 +126,4 @@ const useAddUserViewModel = (navigation) => {
   };
 };
 
-export default useAddUserViewModel;
+export default useAddWorkerViewModel;
