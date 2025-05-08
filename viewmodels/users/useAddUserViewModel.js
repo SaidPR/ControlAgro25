@@ -6,6 +6,22 @@ import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 
 const useAddUserViewModel = (navigation) => {
+  const [formData, setFormData] = useState({
+    primerNombre: "",
+    segundoNombre: "",
+    primerApellido: "",
+    segundoApellido: "",
+    telefono: "",
+    email: "",
+    password: "",
+    fechaNacimiento: "",
+    curp: "",
+  });
+
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
+  const [generatedCode, setGeneratedCode] = useState(null);
+  const [step, setStep] = useState("form"); // 'form' -> 'verify'
 
   useEffect(() => {
     registerForPushNotificationsAsync();
@@ -27,21 +43,6 @@ const useAddUserViewModel = (navigation) => {
       console.log("Debe usarse en un dispositivo físico para recibir notificaciones.");
     }
   };
-
-  const [formData, setFormData] = useState({
-    primerNombre: "",
-    segundoNombre: "",
-    primerApellido: "",
-    segundoApellido: "",
-    telefono: "",
-    email: "",
-    password: "",
-    fechaNacimiento: "",
-    curp: "",
-  });
-
-  const [error, setError] = useState(null);
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -74,55 +75,84 @@ const useAddUserViewModel = (navigation) => {
       return;
     }
 
-    try {
-      const userCredential = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
-      const user = userCredential.user;
+    // Generar código y pasar al paso de verificación
+    const code = Math.floor(100000 + Math.random() * 900000).toString(); // Código de 6 dígitos
+    setGeneratedCode(code);
 
-      const userData = {
-        name: `${formData.primerNombre} ${formData.segundoNombre} ${formData.primerApellido} ${formData.segundoApellido}`.trim(),
-        phone: formData.telefono,
-        email,
-        fechaNacimiento,
-        curp: formData.curp,
-        role: "ADMIN",
-      };
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Código de verificación",
+        body: `Tu código es: ${code}`,
+        sound: "default",
+      },
+      trigger: null,
+    });
 
-      const usersCollectionRef = collection(FIRESTORE_DB, "users");
-      await addDoc(usersCollectionRef, userData);
+    setStep("verify");
+  };
 
+  const handleConfirmCode = async () => {
+    if (verificationCode !== generatedCode) {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: "Inicio de sesión exitoso",
-          body: `!Bienvenido, ${user.email}!`,
-          sound: "default",
-        },
-        trigger: null,
-      });
-
-      setTimeout(() => {
-        navigation.navigate("Home");
-      }, 300);
-    } catch (error) {
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: "Error",
-          body: "Error al realizar el registro.",
+          title: "Código incorrecto",
+          body: "El código ingresado no es válido.",
           sound: "default",
         },
         trigger: null,
       });
       return;
     }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(FIREBASE_AUTH, formData.email, formData.password);
+      const user = userCredential.user;
+
+      const userData = {
+        name: `${formData.primerNombre} ${formData.segundoNombre} ${formData.primerApellido} ${formData.segundoApellido}`.trim(),
+        phone: formData.telefono,
+        email: formData.email,
+        fechaNacimiento: formData.fechaNacimiento,
+        curp: formData.curp,
+        role: "ADMIN",
+      };
+
+      await addDoc(collection(FIRESTORE_DB, "users"), userData);
+
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Registro exitoso",
+          body: `¡Bienvenido, ${user.email}!`,
+          sound: "default",
+        },
+        trigger: null,
+      });
+
+      navigation.navigate("Home");
+    } catch (error) {
+      console.log("Error al registrar usuario:", error);
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Error de registro",
+          body: "No se pudo registrar al usuario.",
+          sound: "default",
+        },
+        trigger: null,
+      });
+    }
   };
 
   return {
     formData,
-    error,
     showDatePicker,
     handleInputChange,
     handleDateChange,
     handleRegistro,
+    handleConfirmCode,
     setShowDatePicker,
+    verificationCode,
+    setVerificationCode,
+    step,
   };
 };
 

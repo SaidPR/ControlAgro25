@@ -25,7 +25,7 @@ if (typeof window !== 'undefined' && window.document) {
 } else {
   // Entorno React Native
   FIREBASE_AUTH = initializeAuth(FIREBASE_APP, {
-    persistence: getReactNativePersistence(ReactNativeAsyncStorage) // Establece la persistencia
+    persistence: getReactNativePersistence(ReactNativeAsyncStorage) 
   });
 }
 

@@ -17,96 +17,102 @@ const { width, height } = Dimensions.get("window");
 const AddUser = ({ navigation }) => {
   const {
     formData,
-    error,
     showDatePicker,
     handleInputChange,
     handleDateChange,
     handleRegistro,
+    handleConfirmCode,
     setShowDatePicker,
+    verificationCode,
+    setVerificationCode,
+    step,
   } = useAddUserViewModel(navigation);
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>Registro de Usuario</Text>
-        {error && <Text style={styles.errorText}>{error}</Text>}
 
-        <TextInput
-          placeholder="Primer nombre"
-          value={formData.primerNombre}
-          onChangeText={(value) => handleInputChange("primerNombre", value)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Segundo nombre"
-          value={formData.segundoNombre}
-          onChangeText={(value) => handleInputChange("segundoNombre", value)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Primer apellido"
-          value={formData.primerApellido}
-          onChangeText={(value) => handleInputChange("primerApellido", value)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Segundo apellido"
-          value={formData.segundoApellido}
-          onChangeText={(value) => handleInputChange("segundoApellido", value)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Teléfono"
-          value={formData.telefono}
-          onChangeText={(value) => handleInputChange("telefono", value)}
-          keyboardType="phone-pad"
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Correo Electrónico"
-          value={formData.email}
-          onChangeText={(value) => handleInputChange("email", value)}
-          keyboardType="email-address"
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Contraseña"
-          value={formData.password}
-          onChangeText={(value) => handleInputChange("password", value)}
-          secureTextEntry
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="CURP"
-          value={formData.curp}
-          onChangeText={(value) => handleInputChange("curp", value)}
-          style={styles.input}
-        />
+        {step === "form" ? (
+          <>
+            <TextInput
+              placeholder="Primer nombre"
+              value={formData.primerNombre}
+              onChangeText={(value) => handleInputChange("primerNombre", value)}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Segundo nombre"
+              value={formData.segundoNombre}
+              onChangeText={(value) => handleInputChange("segundoNombre", value)}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Primer apellido"
+              value={formData.primerApellido}
+              onChangeText={(value) => handleInputChange("primerApellido", value)}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Segundo apellido"
+              value={formData.segundoApellido}
+              onChangeText={(value) => handleInputChange("segundoApellido", value)}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Teléfono"
+              value={formData.telefono}
+              onChangeText={(value) => handleInputChange("telefono", value)}
+              keyboardType="phone-pad"
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Correo Electrónico"
+              value={formData.email}
+              onChangeText={(value) => handleInputChange("email", value)}
+              keyboardType="email-address"
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Contraseña"
+              value={formData.password}
+              onChangeText={(value) => handleInputChange("password", value)}
+              secureTextEntry
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="CURP"
+              value={formData.curp}
+              onChangeText={(value) => handleInputChange("curp", value)}
+              style={styles.input}
+            />
+            <TouchableOpacity style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
+              <Text style={styles.dateButtonText}>
+                {formData.fechaNacimiento || "Seleccionar Fecha de Nacimiento"}
+              </Text>
+            </TouchableOpacity>
+            {showDatePicker && (
+              <DateTimePicker value={new Date()} mode="date" display="default" onChange={handleDateChange} />
+            )}
 
-        <TouchableOpacity
-          style={styles.dateButton}
-          onPress={() => setShowDatePicker(true)}
-        >
-          <Text style={styles.dateButtonText}>
-            {formData.fechaNacimiento || "Seleccionar Fecha de Nacimiento"}
-          </Text>
-        </TouchableOpacity>
-
-        {showDatePicker && (
-          <DateTimePicker
-            value={new Date()}
-            mode="date"
-            display="default"
-            onChange={handleDateChange}
-          />
+            <TouchableOpacity style={styles.button} onPress={handleRegistro}>
+              <Text style={styles.buttonText}>Enviar Código de Verificación</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <TextInput
+              placeholder="Ingresa el código de verificación"
+              value={verificationCode}
+              onChangeText={setVerificationCode}
+              keyboardType="number-pad"
+              style={styles.input}
+            />
+            <TouchableOpacity style={styles.button} onPress={handleConfirmCode}>
+              <Text style={styles.buttonText}>Confirmar Código</Text>
+            </TouchableOpacity>
+          </>
         )}
-
-        <TouchableOpacity style={styles.button} onPress={handleRegistro}>
-          <Text style={styles.buttonText}>Registrar</Text>
-        </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -125,10 +131,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#333",
     marginBottom: height * 0.02,
-  },
-  errorText: {
-    color: "red",
-    marginBottom: 10,
   },
   input: {
     width: "100%",
