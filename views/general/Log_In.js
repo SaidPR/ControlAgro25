@@ -13,7 +13,11 @@ const LoginScreen = ({ navigation }) => {
     setEmail,
     password,
     setPassword,
-    handleLogin,
+    verificationCode,
+    setVerificationCode,
+    isCodeRequested,
+    handleSendVerificationCode,
+    handleVerifyCode,
   } = useLoginViewModel(navigation);
 
   return (
@@ -24,26 +28,43 @@ const LoginScreen = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.backgroundCircle} />
         <Text style={styles.title}>¡Bienvenido de nuevo!</Text>
-        <TextInput
-          placeholder="Correo Electrónico"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Contraseña"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          style={styles.input}
-        />
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Iniciar Sesión</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("RecoverPassword")}>
-          <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
-        </TouchableOpacity>
+        {!isCodeRequested ? (
+          <>
+            <TextInput
+              placeholder="Correo Electrónico"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Contraseña"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              style={styles.input}
+            />
+            <TouchableOpacity style={styles.button} onPress={handleSendVerificationCode}>
+              <Text style={styles.buttonText}>Iniciar Sesión</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("RecoverPassword")}>
+              <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <TextInput
+              placeholder="Código de verificación"
+              value={verificationCode}
+              onChangeText={setVerificationCode}
+              keyboardType="numeric"
+              style={styles.input}
+            />
+            <TouchableOpacity style={styles.button} onPress={handleVerifyCode}>
+              <Text style={styles.buttonText}>Verificar Código</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </ScrollView>
     </KeyboardAvoidingView>
   );
