@@ -1,9 +1,9 @@
-import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import * as ImagePicker from "expo-image-picker";
-import { Alert, Linking } from "react-native";
-import { FIRESTORE_DB } from "../../services/firebaseConfig";
-import UserModel from "../../models/UserModel";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
+import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { FIRESTORE_DB } from '../../services/firebaseConfig';
+import UserModel from '../../models/UserModel';
 
 export default class UsersViewModel {
   constructor(setUsers, setFilteredUsers, setLoading) {
@@ -15,13 +15,27 @@ export default class UsersViewModel {
   fetchUsers = async () => {
     this.setLoading(true);
     try {
-      const usersCollection = collection(FIRESTORE_DB, "users");
-      const querySnapshot = await getDocs(usersCollection);
-      const usersList = querySnapshot.docs.map(doc => new UserModel({ id: doc.id, ...doc.data() }));
-      this.setUsers(usersList);
-      this.setFilteredUsers(usersList);
+      const isConnected = await NetInfo.fetch().then(state => state.isConnected);
+
+      if (isConnected) {
+        const usersCollection = collection(FIRESTORE_DB, 'users');
+        const querySnapshot = await getDocs(usersCollection);
+        const usersList = querySnapshot.docs.map(doc => new UserModel({ id: doc.id, ...doc.data() }));
+        await AsyncStorage.setItem('cachedUsers', JSON.stringify(usersList));
+        this.setUsers(usersList);
+        this.setFilteredUsers(usersList);
+      } else {
+        const cachedData = await AsyncStorage.getItem('cachedUsers');
+        if (cachedData) {
+          const usersList = JSON.parse(cachedData);
+          this.setUsers(usersList);
+          this.setFilteredUsers(usersList);
+        } else {
+          Alert.alert('Sin conexión', 'No hay datos guardados localmente.');
+        }
+      }
     } catch (error) {
-      Alert.alert("Error", "No se pudieron cargar los usuarios");
+      Alert.alert('Error', 'No se pudieron cargar los usuarios.');
       console.error(error);
     } finally {
       this.setLoading(false);
