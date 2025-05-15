@@ -70,7 +70,7 @@ export default function PantallaInicio({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button]}
-            onPress={() => navigation.navigate("UsersList")}
+            onPress={() => navigation.navigate("ProductionControl")}
           >
             <Text style={styles.buttonText}>Control de Producción</Text>
           </TouchableOpacity>

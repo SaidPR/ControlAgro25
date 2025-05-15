@@ -14,6 +14,10 @@ import AddUser from "../views/users/AddUser";
 import WorkersList from "../views/workers/WorkersList";
 import WorkerDetails from "../views/workers/WorkerDetails";
 import AddWorker from "../views/workers/AddWorker";
+// Views de Producción
+import ProductionControl from "../views/prod/productionControl";
+import AddProduction from "../views/prod/addProduction";
+import ProductionDetails from "../views/prod/productionDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +40,13 @@ const Navigation = () => {
             <Stack.Screen name="WorkerDetails" component={WorkerDetails} options={({ route }) => ({
                     title: `Detalles de ${route.params?.worker?.name || "Trabajador"}`, })} />
             <Stack.Screen name="AddWorker" component={AddWorker} options={{ title: "Registrar Trabajador" }} />
+            {/* Views de Producción */}
+            <Stack.Screen name="ProductionControl" component={ProductionControl} />
+            <Stack.Screen name="AddProduction" component={AddProduction} options={({ route }) => ({
+                    title: route.params?.record ? "Editar Registro de Producción" : "Añadir Registro de Producción",
+                })} />
+            <Stack.Screen name="ProductionDetails" component={ProductionDetails} options={({ route }) => ({
+                    title: `Detalles de ${route.params?.record?.name || "Producción"}`, })} />
         </Stack.Navigator>
     );  
 }

@@ -80,7 +80,7 @@ export default function MenuLateral({ navigation }) {
           style={estilos.opcionMenu}
           onPress={() => {
             alternarMenu();
-            navigation.navigate("Proveedores");
+            navigation.navigate("ProductionControl");
           }}
         >
           <Text style={estilos.textoMenu}>Control de Producción</Text>
