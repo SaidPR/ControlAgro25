@@ -8,6 +8,7 @@ npm install
 MVVM Aplicado:
 Usuarios - Listo
 Trabajadores - Listo
+Producción - Listo - 15/05/25
 
 08/05/2025
 Verificación de Inicio de Sesión y Registro de Usuarios utilizando Notificación Push
