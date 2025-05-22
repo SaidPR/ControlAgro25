@@ -4,6 +4,7 @@ import BottomNavigationBar from "../../components/BottomNavigationBar";
 import logo from "../../assets/Agro.webp";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../../services/firebaseConfig";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import MenuLateralPrincipal from "../../components/SlidebarHome"; 
 
 const { width, height } = Dimensions.get("window");
 
@@ -76,12 +77,12 @@ export default function PantallaInicio({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button]}
-            onPress={() => navigation.navigate("UsersList")}
+            onPress={() => navigation.navigate("ReportList")}
           >
             <Text style={styles.buttonText}>Gestión de Reportes</Text>
           </TouchableOpacity>
         </View>
-
+        <MenuLateralPrincipal navigation={navigation} />
         <BottomNavigationBar navigation={navigation} />
       </View>
     </ImageBackground>

@@ -1,9 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, initializeAuth, browserLocalPersistence, getReactNativePersistence } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage'; // Importar AsyncStorage
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
-// Configuración de Firebase para tu app
 const firebaseConfig = {
   apiKey: "AIzaSyBVaUUgwZxx2R6oINGtt7JNMv6q9Kycwe0",
   authDomain: "appqr-d7f92.firebaseapp.com",
@@ -13,10 +12,8 @@ const firebaseConfig = {
   appId: "1:460840966769:web:ef68591df4a784e192d9d0"
 };
 
-// Inicializa Firebase
 export const FIREBASE_APP = initializeApp(firebaseConfig);
 
-// Inicializa Firebase Auth con persistencia (usando AsyncStorage en React Native y browserLocalPersistence en web)
 let FIREBASE_AUTH;
 if (typeof window !== 'undefined' && window.document) {
   // Entorno web

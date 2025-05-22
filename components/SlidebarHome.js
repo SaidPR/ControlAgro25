@@ -1,25 +1,25 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Animated, Dimensions, Image, Alert } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import logo from "../assets/Agro.webp"; 
 
 const { width, height } = Dimensions.get("window");
 
-export default function MenuLateral({ navigation }) {
+export default function MenuLateralPrincipal({ navigation }) {
   const [menuVisible, setMenuVisible] = useState(false); 
   const animacionSlide = useRef(new Animated.Value(-width * 0.7)).current; 
 
   const alternarMenu = () => {
     if (menuVisible) {
       Animated.timing(animacionSlide, {
-        toValue: -width * 0.7, // Ocultar menú
+        toValue: -width * 0.7, 
         duration: 300,
         useNativeDriver: false,
       }).start(() => setMenuVisible(false));
     } else {
       setMenuVisible(true);
       Animated.timing(animacionSlide, {
-        toValue: 0, // Mostrar menú
+        toValue: 0, 
         duration: 300,
         useNativeDriver: false,
       }).start();
@@ -33,7 +33,7 @@ export default function MenuLateral({ navigation }) {
         <TouchableOpacity
           style={estilos.superposicion}
           activeOpacity={1}
-          onPress={alternarMenu} // Cierra el menú al presionar el fondo
+          onPress={alternarMenu} 
         />
       )}
 
@@ -47,10 +47,10 @@ export default function MenuLateral({ navigation }) {
           style={estilos.opcionMenu}
           onPress={() => {
             alternarMenu();
-            navigation.navigate("Lista");
+            navigation.navigate("Account");
           }}
         >
-          <Text style={estilos.textoMenu}>Pase de lista</Text>
+          <Text style={estilos.textoMenu}>Información de la Cuenta</Text>
           <MaterialIcons name="chevron-right" size={24} color="#A5D6A7" />
         </TouchableOpacity>
 
@@ -58,10 +58,10 @@ export default function MenuLateral({ navigation }) {
           style={estilos.opcionMenu}
           onPress={() => {
             alternarMenu();
-            navigation.navigate("UsersList");
+            navigation.navigate("Settings");
           }}
         >
-          <Text style={estilos.textoMenu}>Administrar Usuarios</Text>
+          <Text style={estilos.textoMenu}>Configuración</Text>
           <MaterialIcons name="chevron-right" size={24} color="#A5D6A7" />
         </TouchableOpacity>
 
@@ -69,35 +69,13 @@ export default function MenuLateral({ navigation }) {
           style={estilos.opcionMenu}
           onPress={() => {
             alternarMenu();
-            navigation.navigate("WorkersList");
+            navigation.navigate("Home");
           }}
         >
-          <Text style={estilos.textoMenu}>Gestión de Trabajadores</Text>
+          <Text style={estilos.textoMenu}>Menú Principal</Text>
           <MaterialIcons name="chevron-right" size={24} color="#A5D6A7" />
         </TouchableOpacity>
-
-        <TouchableOpacity
-          style={estilos.opcionMenu}
-          onPress={() => {
-            alternarMenu();
-            navigation.navigate("ProductionControl");
-          }}
-        >
-          <Text style={estilos.textoMenu}>Control de Producción</Text>
-          <MaterialIcons name="chevron-right" size={24} color="#A5D6A7" />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={estilos.opcionMenu}
-          onPress={() => {
-            alternarMenu();
-            navigation.navigate("ReportList");
-          }}
-        >
-          <Text style={estilos.textoMenu}>Gestión de Reportes</Text>
-          <MaterialIcons name="chevron-right" size={24} color="#A5D6A7" />
-        </TouchableOpacity>
-        {/* Botón para cerrar sesión */}
+        {/* Botón para cerrar sesión */} 
         <TouchableOpacity
           style={estilos.botonCerrarSesion}
           onPress={() => {
