@@ -33,27 +33,26 @@ const Navigation = () => {
             <Stack.Screen name="Home" component={PantallaInicio} />
             <Stack.Screen name="Lista" component={Lista} />
             <Stack.Screen name="RecoverPassword" component={RecoverPasswordScreen} />
+            
             {/* Views de Usuarios */}
             <Stack.Screen name="UsersList" component={UsersList} />
             <Stack.Screen name="UsersDetails" component={UsersDetails} />
             <Stack.Screen name="UserEdit" component={UserEdit} />
             <Stack.Screen name="AddUser" component={AddUser} />
+            
             {/* Views de Trabajadores */}
             <Stack.Screen name="WorkersList" component={WorkersList} />
-            <Stack.Screen name="WorkerDetails" component={WorkerDetails} options={({ route }) => ({
-                    title: `Detalles de ${route.params?.worker?.name || "Trabajador"}`, })} />
-            <Stack.Screen name="AddWorker" component={AddWorker} options={{ title: "Registrar Trabajador" }} />
+            <Stack.Screen name="WorkerDetails" component={WorkerDetails} />
+            <Stack.Screen name="AddWorker" component={AddWorker} />
+            
             {/* Views de Producción */}
             <Stack.Screen name="ProductionControl" component={ProductionControl} />
-            <Stack.Screen name="AddProduction" component={AddProduction} options={({ route }) => ({
-                    title: route.params?.record ? "Editar Registro de Producción" : "Añadir Registro de Producción",
-                })} />
-            <Stack.Screen name="ProductionDetails" component={ProductionDetails} options={({ route }) => ({
-                    title: `Detalles de ${route.params?.record?.name || "Producción"}`, })} />
+            <Stack.Screen name="AddProduction" component={AddProduction} />
+            <Stack.Screen name="ProductionDetails" component={ProductionDetails} />
+            
             {/* Views de Reportes */}
             <Stack.Screen name="ReportList" component={ReportList} />
-            <Stack.Screen name="DetailsReports" component={ReportDetails} options={({ route }) => ({
-                    title: `Detalles de ${route.params?.report?.title || "Reporte"}`, })} />
+            <Stack.Screen name="ReportDetails" component={ReportDetails} />
         </Stack.Navigator>
     );  
 }

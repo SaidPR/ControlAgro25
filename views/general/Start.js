@@ -22,7 +22,7 @@ const VentanaVistaUsuario = ({ navigation }) => {
         <Image
           style={styles.logoAgricola}
           resizeMode="contain"
-          source={require("../../assets/Agro.webp")}
+          source={require("../../assets/agroLogo.webp")}
         />
 
         {/* Botones principales */}

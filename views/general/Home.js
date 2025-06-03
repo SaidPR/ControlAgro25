@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image, ImageBackground } from "react-native";
 import BottomNavigationBar from "../../components/BottomNavigationBar";
-import logo from "../../assets/Agro.webp";
+import logo from "../../assets/agroLogo.webp";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../../services/firebaseConfig";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import MenuLateralPrincipal from "../../components/SlidebarHome"; 

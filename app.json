@@ -2,9 +2,10 @@
   "expo": {
     "name": "ControlAgro",
     "slug": "ControlAgro",
+    "owner": "saidpr16",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/agroLogoIcon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -17,12 +18,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/agroLogoIcon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.saidpr16.ControlAgro"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a883414d-d8dd-44c7-80b8-0b9290abc6b1"
+      }
     }
   }
 }

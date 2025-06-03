@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Animated, Dimensions, Image, Alert } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import logo from "../assets/Agro.webp"; 
+import logo from "../assets/agroLogo.webp"; 
 
 const { width, height } = Dimensions.get("window");
 
