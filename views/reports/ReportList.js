@@ -18,7 +18,7 @@ const ReportList = ({ navigation }) => {
   const renderReportCard = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => navigation.navigate("DetailsReports", { report: item })}
+      onPress={() => navigation.navigate("ReportDetails", { report: item })}
     >
       <View style={styles.cardContent}>
         <Text style={styles.reportTitle}>{item.title}</Text>
@@ -26,7 +26,7 @@ const ReportList = ({ navigation }) => {
         <Text style={styles.reportDescription}>{item.description}</Text>
         <TouchableOpacity
           style={styles.detailsButton}
-          onPress={() => navigation.navigate("DetailsReports", { report: item })}
+          onPress={() => navigation.navigate("ReportDetails", { report: item })}
         >
           <Text style={styles.detailsButtonText}>Ver Detalles</Text>
         </TouchableOpacity>
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 3, // Para Android
+    elevation: 3, 
   },
   cardContent: {
     flexDirection: "column",

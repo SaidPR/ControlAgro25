@@ -8,7 +8,7 @@ import {
   Image,
   Alert,
   Dimensions,
-  TextInput,
+  TextInput
 } from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import UsersViewModel from "../../viewmodels/users/UsersViewModel";

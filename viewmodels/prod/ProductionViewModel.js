@@ -1,21 +1,16 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, setDoc, addDoc, getDocs } from "firebase/firestore";
+import { Alert } from "react-native";
 import { FIRESTORE_DB } from "../../services/firebaseConfig";
-import ProductionRecord from "../../models/ProductionModel";
 
 class ProductionViewModel {
     async fetchConfirmedUsers() {
         try {
-            console.log("Fetching confirmed attendance...");
-
             const attendanceSnapshot = await getDocs(collection(FIRESTORE_DB, "attendance"));
             const confirmedAttendance = attendanceSnapshot.docs
                 .filter((doc) => doc.data().status === "Confirmada")
                 .map((doc) => doc.data().workerId);
 
-            if (confirmedAttendance.length === 0) {
-                console.warn("No se encontraron registros de asistencia confirmados.");
-                return [];
-            }
+            if (confirmedAttendance.length === 0) return [];
 
             const usersSnapshot = await getDocs(collection(FIRESTORE_DB, "users"));
             const filteredUsers = usersSnapshot.docs
@@ -29,15 +24,38 @@ class ProductionViewModel {
         }
     }
 
-    async saveRecord(record, existingRecord, onSave, navigation) {
+    async saveRecord(record, existingRecord = null) {
+        const data = record.toObject();
+
         try {
-            if (existingRecord) {
-                console.log("Actualizando registro:", record);
-                // Aquí iría la lógica de actualización en Firebase
-            } else if (onSave) {
-                console.log("Guardando nuevo registro:", record);
-                onSave(record);
-                navigation.goBack();
+            if (existingRecord?.id) {
+                return new Promise((resolve, reject) => {
+                    Alert.alert(
+                        "Confirmar actualización",
+                        "¿Deseas actualizar este registro de producción?",
+                        [
+                            {
+                                text: "Cancelar",
+                                style: "cancel",
+                                onPress: () => reject("Actualización cancelada"),
+                            },
+                            {
+                                text: "Actualizar",
+                                onPress: async () => {
+                                    const docRef = doc(FIRESTORE_DB, "productions", existingRecord.id);
+                                    await setDoc(docRef, data);
+                                    console.log("Registro actualizado:", data);
+                                    resolve();
+                                },
+                            },
+                        ],
+                        { cancelable: false }
+                    );
+                });
+            } else {
+                const collectionRef = collection(FIRESTORE_DB, "productions");
+                await addDoc(collectionRef, data);
+                console.log("Nuevo registro guardado:", data);
             }
         } catch (error) {
             console.error("Error al guardar el registro:", error);

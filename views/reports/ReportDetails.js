@@ -1,51 +1,66 @@
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import React from "react";
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import MenuLateral from "../../components/Slidebar";
+import BottomNavigationBar from "../../components/BottomNavigationBar";
 import useDetailsReportsViewModel from "../../viewmodels/reports/ReportDetViewModel";
+
+const { height } = Dimensions.get("window");
 
 const DetailsReports = ({ route, navigation }) => {
   const { report } = route.params;
   const { formatDate, handleDeleteReport, error } = useDetailsReportsViewModel(navigation, report);
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>{report.title}</Text>
-      {/* Validar y mostrar la fecha */}
-      <Text style={styles.date}>{formatDate(report.date)}</Text>
-      <Text style={styles.description}>{report.description}</Text>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <Text style={styles.title}>{report.title}</Text>
+        {/* Validar y mostrar la fecha */}
+        <Text style={styles.date}>{formatDate(report.date)}</Text>
+        <Text style={styles.description}>{report.description}</Text>
 
-      {/* Mostrar las asistencias */}
-      <Text style={styles.subTitle}>Asistencias:</Text>
-      {report.attendance && report.attendance.length > 0 ? (
-        report.attendance.map((attendance, index) => (
-          <View key={index} style={styles.attendanceItem}>
-            <Text style={styles.attendanceText}>
-              {formatDate(attendance.date)} - {attendance.status}
-            </Text>
-          </View>
-        ))
-      ) : (
-        <Text style={styles.noAttendance}>No hay registros de asistencia.</Text>
-      )}
+        {/* Mostrar las asistencias */}
+        <Text style={styles.subTitle}>Asistencias:</Text>
+        {report.attendance && report.attendance.length > 0 ? (
+          report.attendance.map((attendance, index) => (
+            <View key={index} style={styles.attendanceItem}>
+              <Text style={styles.attendanceText}>
+                {formatDate(attendance.date)} - {attendance.status}
+              </Text>
+            </View>
+          ))
+        ) : (
+          <Text style={styles.noAttendance}>No hay registros de asistencia.</Text>
+        )}
 
-      {/* Botón para eliminar el reporte */}
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={handleDeleteReport}
-      >
-        <Text style={styles.deleteButtonText}>Eliminar Reporte</Text>
-      </TouchableOpacity>
+        {/* Botón para eliminar el reporte */}
+        <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteReport}>
+          <Text style={styles.deleteButtonText}>Eliminar Reporte</Text>
+        </TouchableOpacity>
 
-      {error && <Text style={styles.errorText}>{error}</Text>}
-    </ScrollView>
+        {error && <Text style={styles.errorText}>{error}</Text>}
+      </ScrollView>
+
+      {/* Barra lateral */}
+      <MenuLateral navigation={navigation} />
+
+      {/* Menú inferior */}
+      <BottomNavigationBar navigation={navigation} />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: "#fff",
   },
+  scrollContent: {
+    padding: 20,
+    paddingBottom: height * 0.12,
+  },
   title: {
+    marginTop: 60,
+    marginBottom: 10,
     fontSize: 24,
     fontWeight: "bold",
   },
@@ -58,6 +73,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#34495e",
     marginBottom: 20,
+    marginTop: 10,
   },
   subTitle: {
     fontSize: 18,

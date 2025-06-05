@@ -8,7 +8,6 @@ const useAddProductionRecordViewModel = (navigation, route) => {
   const [selectedUser, setSelectedUser] = useState(route.params?.record?.name || "");
   const [boxes, setBoxes] = useState(route.params?.record?.boxes?.toString() || "");
   const [buckets, setBuckets] = useState(route.params?.record?.buckets?.toString() || "");
-  const [onSave, setOnSave] = useState(() => route.params?.onSave);
 
   useEffect(() => {
     ProductionViewModel.fetchConfirmedUsers()
@@ -22,6 +21,14 @@ const useAddProductionRecordViewModel = (navigation, route) => {
       return;
     }
 
+    const parsedBoxes = parseInt(boxes, 10);
+    const parsedBuckets = parseInt(buckets, 10);
+
+    if (isNaN(parsedBoxes) || isNaN(parsedBuckets) || parsedBoxes < 0 || parsedBuckets < 0) {
+      Alert.alert("Error", "Cajas y baldes deben ser números válidos.");
+      return;
+    }
+
     const record = new ProductionRecord(
       route.params?.record?.id || null,
       selectedUser,
@@ -30,16 +37,17 @@ const useAddProductionRecordViewModel = (navigation, route) => {
         month: "short",
         year: "numeric",
       }),
-      parseInt(boxes, 10),
-      parseInt(buckets, 10)
+      parsedBoxes,
+      parsedBuckets
     );
 
     try {
       await ProductionViewModel.saveRecord(record, route.params?.record);
-      if (onSave) onSave();
       navigation.goBack();
     } catch (error) {
-      Alert.alert("Error", error.message);
+      if (error !== "Actualización cancelada") {
+        Alert.alert("Error", error.message);
+      }
     }
   };
 

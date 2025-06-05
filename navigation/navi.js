@@ -5,6 +5,9 @@ import LogIn from "../views/general/Log_In";
 import PantallaInicio from "../views/general/Home";    
 import Lista from "../views/general/Lista";
 import RecoverPasswordScreen from "../views/general/RecoverPassword";
+import Account from "../views/general/Account";
+import Settings from "../views/general/Settings";
+import ChangePasswordScreen from "../views/general/ChangePasswordScreen";
 // Views de Usuarios
 import UsersList from "../views/users/UsersList";
 import UsersDetails from "../views/users/UsersDetails";
@@ -33,6 +36,9 @@ const Navigation = () => {
             <Stack.Screen name="Home" component={PantallaInicio} />
             <Stack.Screen name="Lista" component={Lista} />
             <Stack.Screen name="RecoverPassword" component={RecoverPasswordScreen} />
+            <Stack.Screen name="Account" component={Account} />
+            <Stack.Screen name="Settings" component={Settings} />
+            <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} />
             
             {/* Views de Usuarios */}
             <Stack.Screen name="UsersList" component={UsersList} />

@@ -6,4 +6,13 @@ export default class ProductionModel {
         this.boxes = boxes;
         this.buckets = buckets;
     }
+
+    toObject() {
+        return {
+            name: this.name,
+            date: this.date,
+            boxes: this.boxes,
+            buckets: this.buckets,
+        };
+    }
 }

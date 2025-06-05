@@ -97,7 +97,6 @@ const WorkersList = ({ navigation }) => {
             }
           />
         </View>
-        <View style={styles.container}>
       {/* Botón de Registrar Trabajador */}
       <TouchableOpacity
         style={styles.registerButton}
@@ -106,7 +105,6 @@ const WorkersList = ({ navigation }) => {
         <Text style={styles.registerButtonText}>+ Registrar Trabajador</Text>
       </TouchableOpacity>
 
-    </View>
   
         {loading ? (
           <Text style={styles.loadingText}>Cargando trabajadores...</Text>
@@ -126,13 +124,17 @@ const WorkersList = ({ navigation }) => {
   };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f4f4f4", padding: 10 },
+  container: { 
+    flex: 1, 
+    backgroundColor: "#f4f4f4", 
+    padding: 10,    
+  },
   title: {
     marginTop: height * 0.08,
     fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
-    marginVertical: 10,
+    marginBottom: 10, 
     color: "#333",
   },
   searchContainer: {
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 10,
-    marginBottom: 10,
+    marginBottom: 10, 
     backgroundColor: "#fff",
   },
   searchIcon: {
@@ -153,13 +155,20 @@ const styles = StyleSheet.create({
     height: 40,
     fontSize: 16,
   },
-  list: { paddingBottom: 250 },
+  list: { 
+    paddingBottom: 20 
+  },
+  loadingText: { 
+    fontSize: 18, 
+    textAlign: "center", 
+    marginTop: 20 
+  },
   registerButton: {
     backgroundColor: "#4caf50",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
-    marginBottom: 0,
+    marginBottom: 10,
   },
   registerButtonText: {
     color: "#fff",

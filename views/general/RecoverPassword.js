@@ -12,7 +12,8 @@ import {
   Platform,
 } from "react-native";
 import { sendPasswordResetEmail } from "firebase/auth";
-import { FIREBASE_AUTH } from "../../services/firebaseConfig"; 
+import { FIREBASE_AUTH } from "../../services/firebaseConfig";
+// import Device from 'expo-device'; // You might need to uncomment and install expo-device if using Notifications with Device.isDevice
 import * as Notifications from "expo-notifications";
 
 const { width, height } = Dimensions.get("window");
@@ -20,155 +21,191 @@ const { width, height } = Dimensions.get("window");
 const RecoverPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
 
-  useEffect(() => {
-      registerForPushNotificationsAsync();
-    }, []);
-
-  const registerForPushNotificationsAsync = async () => {
-      if (Device.isDevice) {
-        const { status: existingStatus } = await Notifications.getPermissionsAsync();
-        let finalStatus = existingStatus;
-        if (existingStatus !== "granted") {
-          const { status } = await Notifications.requestPermissionsAsync();
-          finalStatus = status;
-        }
-        if (finalStatus !== "granted") {
-          console.log("Permiso de notificación denegado");
-          return;
-        }
-      } else {
-        console.log("Debe usarse en un dispositivo físico para recibir notificaciones.");
-      }
-    };
-
   const handleRecoverPassword = async () => {
     if (!email.trim()) {
       Alert.alert("Error", "Por favor, ingresa un correo válido.");
       return;
     }
-  
+
     try {
       await sendPasswordResetEmail(FIREBASE_AUTH, email);
       Alert.alert(
         "Correo enviado",
-        "Revisa tu bandeja de entrada para restablecer tu contraseña."
+        "Revisa tu bandeja de entrada para restablecer tu contraseña. Si no lo encuentras, revisa la carpeta de spam.",
+        [
+          {
+            text: "Ok",
+            onPress: () => navigation.navigate("LogIn"),
+          },
+        ]
       );
-      navigation.navigate("LogIn"); 
     } catch (error) {
-        let errorMessage = "Error de inicio de sesión";
+      let errorMessage = "Ocurrió un error inesperado. Intenta nuevamente.";
       switch (error.code) {
         case "auth/invalid-email":
-            errorMessage = "Correo electrónico inválido";
+          errorMessage = "El formato del correo electrónico no es válido.";
           break;
         case "auth/user-not-found":
-            errorMessage = "No existe una cuenta asociada a este correo.";
-            errorMessage = "Ocurrió un error inesperado. Intenta nuevamente.";
+          errorMessage = "No existe una cuenta con este correo electrónico.";
+          break;
+        case "auth/missing-email": 
+          errorMessage = "Por favor, ingresa tu correo electrónico.";
           break;
         default:
-            errorMessage = "Ocurrió un error inesperado. Intenta nuevamente.";
+          console.error("Firebase Password Reset Error:", error.message);
+          errorMessage = `Ocurrió un error: ${error.message}`; 
       }
-      await Notifications.scheduleNotificationAsync({
-              content: {
-                title: "Error al iniciar sesión",
-                body: errorMessage,
-                sound: "default",
-              },
-              trigger: null,
-            });
+      Alert.alert("Error al restablecer contraseña", errorMessage);
     }
   };
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={styles.keyboardAvoidingContainer}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>Recuperar Contraseña</Text>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Recuperar Contraseña</Text>
+        </View>
 
-        <TextInput
-          placeholder="Correo Electrónico"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          style={styles.input}
-        />
+        <View style={styles.recoveryCard}>
+          <Text style={styles.instructionText}>
+            Ingresa el correo electrónico asociado a tu cuenta y te enviaremos un enlace para restablecer tu contraseña.
+          </Text>
 
-        <TouchableOpacity style={styles.button} onPress={handleRecoverPassword}>
-          <Text style={styles.buttonText}>Enviar Enlace</Text>
-        </TouchableOpacity>
+          <TextInput
+            placeholder="Correo Electrónico"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            style={styles.input}
+            placeholderTextColor="#999"
+            autoCapitalize="none" 
+          />
 
-        <TouchableOpacity
-          style={styles.cancelButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Text style={styles.cancelButtonText}>Cancelar</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.actionButton} onPress={handleRecoverPassword}>
+            <Text style={styles.buttonText}>Enviar Enlace</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.cancelButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Text style={styles.cancelButtonText}>Cancelar</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: width * 0.05,
-    backgroundColor: "#f4f4f4",
+  keyboardAvoidingContainer: {
+    flex: 1,
+    backgroundColor: "#F5F8FC", 
   },
-  title: {
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: "flex-start", 
+    alignItems: "center",
+    paddingBottom: height * 0.05, 
+  },
+  header: {
+    backgroundColor: "#0E8C47", 
+    paddingTop: Platform.OS === 'ios' ? height * 0.06 : height * 0.03, 
+    paddingBottom: height * 0.04,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    width: '100%', 
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 8,
+  },
+  headerTitle: {
     fontSize: width * 0.07,
-    fontWeight: "600",
-    color: "#272B35",
-    marginBottom: height * 0.05,
+    fontWeight: "bold",
+    color: "#fff",
+    marginTop: 50,
+  },
+  recoveryCard: {
+    backgroundColor: "#ffffff",
+    borderRadius: 15,
+    marginHorizontal: width * 0.05,
+    padding: width * 0.06,
+    marginTop: -height * 0.01, 
+    width: "90%",
+    maxWidth: 400,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  instructionText: {
+    fontSize: width * 0.042,
+    color: "#555",
+    textAlign: "center",
+    marginBottom: height * 0.03,
+    lineHeight: width * 0.06,
+    paddingHorizontal: width * 0.02,
   },
   input: {
     width: "100%",
     paddingVertical: height * 0.018,
-    paddingHorizontal: width * 0.05,
+    paddingHorizontal: width * 0.04,
     borderWidth: 1,
-    borderColor: "#dcdde1",
-    borderRadius: 20,
-    backgroundColor: "#ffffff",
-    marginBottom: height * 0.03,
+    borderColor: "#e0e0e0",
+    borderRadius: 8,
+    backgroundColor: "#fcfcfc",
+    marginBottom: height * 0.025, 
     fontSize: width * 0.04,
+    color: '#333',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
   },
-  button: {
-    width: "80%",
-    paddingVertical: height * 0.02,
-    backgroundColor: "#1abc9c",
-    borderRadius: 20,
+  actionButton: {
+    width: "100%",
+    paddingVertical: height * 0.022,
+    backgroundColor: "#14AE5C", 
+    borderRadius: 10,
     alignItems: "center",
-    marginBottom: height * 0.03,
+    justifyContent: "center",
+    marginTop: height * 0.01,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 4,
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 6,
   },
   buttonText: {
-    color: "#1A1A1A",
-    fontSize: width * 0.045,
-    fontWeight: "600",
+    color: "#fff",
+    fontSize: width * 0.048,
+    fontWeight: "bold",
   },
   cancelButton: {
-    width: "80%",
-    paddingVertical: height * 0.02,
-    backgroundColor: "#e74c3c",
-    borderRadius: 20,
+    width: "100%",
+    paddingVertical: height * 0.018, 
+    backgroundColor: 'transparent', 
+    borderRadius: 10,
     alignItems: "center",
-    marginBottom: height * 0.03,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 4,
+    justifyContent: "center",
+    marginTop: height * 0.02, 
+    borderWidth: 1, 
+    borderColor: "#C0C0C0", 
   },
   cancelButtonText: {
-    color: "#ffff",
+    color: "#666", 
     fontSize: width * 0.045,
-    fontWeight: "600",
+    fontWeight: "normal", 
   },
 });
 

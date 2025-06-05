@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Alert } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { FIRESTORE_DB } from '../../services/firebaseConfig';
