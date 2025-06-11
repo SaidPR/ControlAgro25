@@ -3,7 +3,7 @@
 **ControlAgro 2025** es una aplicación móvil multiplataforma diseñada para facilitar la gestión de operaciones agrícolas a gran escala, desde el control de asistencia de los trabajadores hasta el seguimiento detallado de la producción. El proyecto está desarrollado con React Native y organizado bajo el patrón **MVVM**, permitiendo escalabilidad y mantenibilidad.
 
 🔗 **Descarga la última versión (APK) desde [GitHub Releases](https://github.com/SaidPR/ControlAgro25/releases)**  
-🌐 **Visita la [Landing Page en Vercel](https://control-agro.vercel.app)**
+🌐 **Visita la [Landing Page en Vercel](https://control-agro-web.vercel.app)**
 
 ---
 
@@ -87,7 +87,7 @@ Luego escanea el QR con la app de Expo Go en Android o ejecuta en emulador.
 ## 📦 Distribución
 
 - 📦 **Releases:** El APK actualizado está disponible en la sección [GitHub Releases](https://github.com/SaidPR/ControlAgro25/releases).
-- 🌐 **Landing Page:** Accesible en [https://control-agro.vercel.app](https://control-agro.vercel.app), permite descarga rápida y muestra capturas de pantalla.
+- 🌐 **Landing Page:** Accesible en [https://control-agro.vercel.app](https://control-agro-web.vercel.app), permite descarga rápida y muestra capturas de pantalla.
 
 ---
 
