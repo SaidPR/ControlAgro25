@@ -111,9 +111,3 @@ Luego escanea el QR con la app de Expo Go en Android o ejecuta en emulador.
 
 📧 ramoszaid5@gmail.com  
 🔗 [GitHub @SaidPR](https://github.com/SaidPR)
-
----
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
