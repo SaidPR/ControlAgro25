@@ -87,7 +87,7 @@ Luego escanea el QR con la app de Expo Go en Android o ejecuta en emulador.
 ## 📦 Distribución
 
 - 📦 **Releases:** El APK actualizado está disponible en la sección [GitHub Releases](https://github.com/SaidPR/ControlAgro25/releases).
-- 🌐 **Landing Page:** Accesible en [https://control-agro.vercel.app](https://control-agro-web.vercel.app), permite descarga rápida y muestra capturas de pantalla.
+- 🌐 **Landing Page:** Accesible en [https://control-agro-web.vercel.app](https://control-agro-web.vercel.app), permite descarga rápida y muestra capturas de pantalla.
 
 ---
 
@@ -96,7 +96,6 @@ Luego escanea el QR con la app de Expo Go en Android o ejecuta en emulador.
 - Implementación final del escaneo QR funcional.
 - Sistema de reportes avanzados exportables (PDF/Excel).
 - CRUD extendido para distintos roles de usuario.
-- Panel web administrativo (futuro).
 
 ---
 
