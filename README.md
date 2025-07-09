@@ -112,6 +112,6 @@ Luego escanea el QR con la app de Expo Go en Android o ejecuta en emulador.
 🔗 [GitHub @SaidPR](https://github.com/SaidPR)
 
 📧manuel.raamirez03@gmail.com
-  l21010310@zamora.tecnm.mx
+📧l21010310@zamora.tecnm.mx
 🔗[GitHub @Manuelillo-dev](https://github.com/Manuelillo-dev)
 
